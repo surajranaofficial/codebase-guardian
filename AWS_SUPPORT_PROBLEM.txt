@@ -1,0 +1,105 @@
+DETAILED PROBLEM EXPLANATION FOR AWS SUPPORT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PROBLEM:
+I cannot access Amazon Bedrock Claude 3 Haiku model despite having $220 
+in AWS credits, including $100 specifically for "AWS AI Agent Hackathon".
+
+WHAT HAPPENS:
+1. I try to invoke Bedrock model via API
+2. Get error: "AccessDeniedException: Model access is denied due to 
+   INVALID_PAYMENT_INSTRUMENT"
+3. AWS Marketplace creates subscription agreement for Claude 3 Haiku
+4. Agreement EXPIRES IMMEDIATELY (start time = end time)
+5. I receive email showing agreement expired at creation
+6. This repeats every time I try
+
+EMAIL EVIDENCE:
+- Agreement 1: Start 07:27 AM UTC, End 07:27 AM UTC (0 seconds duration!)
+- Agreement 2: Start 07:53 AM UTC, End 07:54 AM UTC (1 minute only)
+- Pattern repeats with each attempt
+
+WHAT I'VE TRIED:
+✅ Added payment method (credit/debit card)
+✅ Card is valid and works elsewhere
+✅ Waited 2+ hours for verification
+✅ Multiple access attempts
+✅ Verified $220 credits available
+
+ROOT CAUSE:
+- Payment method validation is FAILING
+- This causes Marketplace agreements to expire instantly
+- Credits cannot be used because payment check fails FIRST
+- Catch-22: Have credits but can't use them
+
+WHY THIS IS URGENT:
+- AWS AI Agent Global Hackathon participant
+- Have $100 credits specifically for this hackathon
+- Project fully deployed on AWS (Lambda + API Gateway working)
+- ONLY need Bedrock access to complete demo
+- Hackathon deadline approaching
+- Will only use ~$5-10 (well within $100 credit)
+
+ACCOUNT DETAILS:
+- Account ID: 823915211349
+- Service: Amazon Bedrock
+- Model: anthropic.claude-3-haiku-20240307-v1:0
+- Region: ap-south-1
+- Credits: $220 total
+  * AWS AI Agent Hackathon - 4th cohort: $100 (exp 11/30/2025)
+  * AWS Free Tier: $100 (exp 10/14/2026)
+  * Explore AWS Lambda: $20 (exp 10/14/2026)
+- Credits used: $0.00
+
+WHAT I NEED:
+Can you please:
+1. Manually enable Bedrock access using my existing credits?
+2. Override/bypass payment validation requirement?
+3. Manually activate Claude 3 Haiku Marketplace subscription?
+4. Provide workaround to use hackathon credits for Bedrock?
+
+The credits were provided specifically for this hackathon project, but 
+payment validation is preventing me from using them.
+
+TECHNICAL DETAILS:
+- AWS Lambda Python 3.9 application
+- API Gateway endpoint deployed
+- IAM role with AmazonBedrockFullAccess
+- Error occurs at: boto3 bedrock-runtime.invoke_model() call
+- Lambda & API Gateway working perfectly
+- Only Bedrock API call fails
+
+SUMMARY:
+Payment validation blocking use of $100 hackathon credits for Bedrock. 
+Marketplace agreements expire immediately upon creation. Need manual 
+intervention to enable Bedrock using existing credits for time-sensitive 
+hackathon project.
+
+Thank you for urgent assistance!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SHORT VERSION (for chat):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Hi, urgent Bedrock access issue.
+
+PROBLEM: Getting "INVALID_PAYMENT_INSTRUMENT" error when trying to use 
+Bedrock Claude 3 Haiku, despite having $100 AWS AI Agent Hackathon credits.
+
+SYMPTOMS: AWS Marketplace agreements expire immediately (start=end time). 
+Email evidence shows 0-1 minute duration. Payment method added but failing 
+validation.
+
+ACCOUNT: 823915211349
+CREDITS: $220 available ($100 for hackathon)
+MODEL: anthropic.claude-3-haiku-20240307-v1:0
+REGION: ap-south-1
+
+NEED: Manual Bedrock activation using existing credits, or bypass payment 
+validation. Time-sensitive hackathon deadline. Project deployed, only need 
+Bedrock API access.
+
+Thank you!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

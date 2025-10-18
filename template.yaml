@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  codebase-guardian
+
+  An AI agent that automatically reviews code in pull requests.
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 512
+  Api:
+    AccessLogSetting:
+      DestinationArn: !GetAtt ApiGatewayLogGroup.Arn
+      Format: '{"requestId":"$context.requestId", "ip": "$context.identity.sourceIp", "caller":"$context.identity.caller", "user":"$context.identity.user","requestTime":"$context.requestTime", "httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath", "status":"$context.status","protocol":"$context.protocol", "responseLength":"$context.responseLength"}'
+    TracingEnabled: true
+
+Resources:
+  ApiGatewayLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      RetentionInDays: 7
+
+  CodeReviewFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: lambda_handler.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        CodeReviewApi:
+          Type: Api
+          Properties:
+            Path: /webhook
+            Method: post
+      Policies:
+        - arn:aws:iam::aws:policy/AmazonBedrockFullAccess # Using a managed policy for simplicity, can be restricted later
+        - Statement:
+          - Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource: "arn:aws:logs:*:*:*"
+
+Outputs:
+  CodeReviewApi:
+    Description: "API Gateway endpoint URL for Prod stage for Code Review function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/webhook/"
+  CodeReviewFunction:
+    Description: "Code Review Lambda Function ARN"
+    Value: !GetAtt CodeReviewFunction.Arn
+  CodeReviewFunctionIamRole:
+    Description: "Implicit IAM Role created for Code Review function"
+    Value: !GetAtt CodeReviewFunctionRole.Arn
