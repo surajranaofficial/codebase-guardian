@@ -45,7 +45,7 @@ Built for the [AWS AI Agent Global Hackathon 2025](https://aws-agent-hackathon.d
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/codebase-guardian.git
+git clone https://github.com/surajranaofficial/codebase-guardian.git
 cd codebase-guardian
 
 # Build the Lambda function
@@ -73,12 +73,12 @@ aws lambda update-function-configuration \
 
 ### API Endpoint
 ```bash
-POST https://your-api-gateway-url/Prod/webhook/
+POST https://i65gy3w2nh.execute-api.eu-west-2.amazonaws.com/Prod/webhook/
 ```
 
 ### Basic Usage
 ```bash
-curl -X POST https://your-api-url/webhook/ \
+curl -X POST https://i65gy3w2nh.execute-api.eu-west-2.amazonaws.com/Prod/webhook/ \
   -H "Content-Type: application/json" \
   -d '{
     "diff": "--- a/main.py\n+++ b/main.py\n@@ -1,3 +1,4 @@\n+import os\n def hello():\n     print(\"Hello\")\n",
@@ -88,7 +88,7 @@ curl -X POST https://your-api-url/webhook/ \
 
 ### GitHub Webhook Integration
 1. Go to your GitHub repository → Settings → Webhooks
-2. Add webhook URL: `https://your-api-url/webhook/`
+2. Add webhook URL: `https://i65gy3w2nh.execute-api.eu-west-2.amazonaws.com/Prod/webhook/`
 3. Content type: `application/json`
 4. Events: Select "Pull requests"
 5. Save webhook
@@ -382,7 +382,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact & Support
 
-- **Issues:** [GitHub Issues](https://github.com/yourusername/codebase-guardian/issues)
+- **Issues:** [GitHub Issues](https://github.com/surajranaofficial/codebase-guardian/issues)
 - **Email:** your.email@example.com
 - **Demo:** [Live Demo](https://your-demo-url.com)
 
@@ -401,7 +401,7 @@ This project was built for the **AWS AI Agent Global Hackathon 2025**
 - ✅ Comprehensive documentation
 
 ### Live Deployment
-🔗 **API Endpoint:** `https://w88pf50xy2.execute-api.ap-south-1.amazonaws.com/Prod/webhook/`
+🔗 **API Endpoint:** `https://i65gy3w2nh.execute-api.eu-west-2.amazonaws.com/Prod/webhook/`
 
 ### Demo Video
 🎬 [Watch Demo](your-demo-video-link) - 3-minute walkthrough
