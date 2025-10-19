@@ -13,7 +13,7 @@ bedrock_runtime = None
 
 # --- Constants ---
 # Default model (can be overridden if needed)
-MODEL_ID = "openai.gpt-oss-120b-1:0"
+MODEL_ID = "us.amazon.nova-premier-v1:0"
 ANTHROPIC_VERSION = "bedrock-2023-05-31"
 MAX_TOKENS = 3000
 
@@ -307,7 +307,13 @@ def review_code_with_severity(code_diff: str, include_metrics: bool = True, debu
     global bedrock_runtime
     if bedrock_runtime is None:
         try:
-            region = 'us-east-1' if MODEL_ID.startswith('openai.') else None
+            # Amazon Nova models are available in us-east-1, us-west-2
+            if MODEL_ID.startswith('us.amazon.nova'):
+                region = 'us-east-1'
+            elif MODEL_ID.startswith('openai.'):
+                region = 'us-east-1'
+            else:
+                region = None
             bedrock_runtime = boto3.client('bedrock-runtime', region_name=region) if region else boto3.client('bedrock-runtime')
         except Exception as e:
             logger.error(f"Error initializing Bedrock client: {e}")
@@ -423,6 +429,16 @@ Respond ONLY with valid JSON following the structure above. Be thorough but conc
             "temperature": 0.3,
             "top_p": 0.9
         }
+    elif MODEL_ID.startswith('us.amazon.nova'):
+        # Amazon Nova models use this format
+        request_body = {
+            "messages": [{"role": "user", "content": [{"text": prompt}]}],
+            "inferenceConfig": {
+                "max_new_tokens": MAX_TOKENS,
+                "temperature": 0.3,
+                "top_p": 0.9
+            }
+        }
     else:
         request_body = {
             "anthropic_version": ANTHROPIC_VERSION,
@@ -453,7 +469,13 @@ Respond ONLY with valid JSON following the structure above. Be thorough but conc
                 'provider_response': response_body
             }
         review_text = ""
-        if MODEL_ID.startswith('openai.'):
+        if MODEL_ID.startswith('us.amazon.nova'):
+            # Amazon Nova models response format
+            try:
+                review_text = response_body.get('output', {}).get('message', {}).get('content', [{}])[0].get('text', '')
+            except Exception:
+                review_text = ''
+        elif MODEL_ID.startswith('openai.'):
             # Prefer Chat Completions shape
             if isinstance(response_body.get('choices'), list) and response_body['choices']:
                 try:

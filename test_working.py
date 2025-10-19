@@ -1,7 +1,7 @@
 import requests
 import json
 
-API_URL = "https://w88pf50xy2.execute-api.ap-south-1.amazonaws.com/Prod/webhook/"
+API_URL = "https://i65gy3w2nh.execute-api.eu-west-2.amazonaws.com/Prod/webhook/"
 
 print("🎉 TESTING WITH VERIFIED PAYMENT!")
 print("=" * 80)
